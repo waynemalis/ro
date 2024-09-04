@@ -6,27 +6,29 @@
     <title>Datos del API de Roblox</title>
 </head>
 <body>
-    <h1>Datos JSON del API de Roblox</h1>
-    <pre id="apiData">Cargando...</pre>
+    <h1>Usuarios Jugando</h1>
+    <p id="playing">Cargando...</p>
 
     <script>
         async function fetchApiData() {
             try {
-                // URL del API de Roblox
-                const response = await fetch('https://games.roproxy.com/v1/games?universeIds=1359573625');
+                // URL del API usando el proxy
+                const url = 'https://games.roproxy.com/v1/games?universeIds=1359573625';
+                const response = await fetch(url);
 
                 // Verifica si la respuesta es exitosa
                 if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+                    throw new Error(`Network response was not ok. Status: ${response.status} ${response.statusText}`);
                 }
 
                 const data = await response.json();
 
-                // Convierte el JSON a un string formateado y lo muestra en la página
-                document.getElementById('apiData').textContent = JSON.stringify(data, null, 2);
+                // Accede al valor de 'playing' y lo muestra en el elemento 'playing'
+                const playing = data.data[0].playing;
+                document.getElementById('playing').textContent = `Usuarios jugando: ${playing}`;
             } catch (error) {
                 console.error('Error fetching API data:', error);
-                document.getElementById('apiData').textContent = 'Error al cargar los datos';
+                document.getElementById('playing').textContent = `Error: ${error.message}`;
             }
         }
 
