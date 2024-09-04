@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugadores Actuales en Roblox</title>
+</head>
+<body>
+    <h1>Jugadores Actuales en Mi Juego de Roblox</h1>
+    <p id="playingCount">Cargando...</p>
+
+    <script>
+        async function fetchPlayingCount() {
+            try {
+                // URL del API de Roblox que has proporcionado
+                const response = await fetch('https://games.roblox.com/v1/games?universeIds=1359573625');
+                const data = await response.json();
+
+                // Accede al valor de "playing"
+                const playingCount = data.data[0].playing;
+
+                // Actualiza el contenido de la página con el número de jugadores
+                document.getElementById('playingCount').textContent = `Jugadores actuales: ${playingCount}`;
+            } catch (error) {
+                console.error('Error fetching playing count:', error);
+                document.getElementById('playingCount').textContent = 'Error al cargar los datos';
+            }
+        }
+
+        // Llama a la función para obtener y mostrar el valor de "playing"
+        fetchPlayingCount();
+        // Puedes hacer que se actualice periódicamente, por ejemplo, cada minuto
+        setInterval(fetchPlayingCount, 60000); // 60000 ms = 1 minuto
+    </script>
+</body>
+</html>
